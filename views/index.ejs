@@ -1,1 +1,93 @@
-<h1>Tafadzwa</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Motors</title>
+    <link rel="stylesheet" href="/css/style.css" media="screen">
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="top-header">
+        <div class="siteName">
+            <a href="/" title="Return to home page">CSE Motors</a>
+        </div>
+        <div id="tools">
+            <a href="/account/login" title="Click to log in">My Account</a>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/custom">Custom</a></li>
+            <li><a href="/sedan">Sedan</a></li>
+            <li><a href="/suv">SUV</a></li>
+            <li><a href="/truck">Truck</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img class="hero-image" src="/images/hero-car.jpg" alt="CSE Motors Hero Car">
+        <div class="hero-text">
+            <h1>Welcome to CSE Motors</h1>
+
+            <div class="featured-car">
+                <h2>DMC DeLorean</h2>
+                <ul>
+                    <li>Three Cup Holders</li>
+                    <li>Superman Doors</li>
+                    <li>Fuzzy Dice</li>
+                </ul>
+                <a href="/contact" class="btn-primary">Order Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grid Section -->
+    <section class="grid-section">
+        <!-- Left: Upgrades -->
+        <div class="grid-left">
+            <h2>DeLorean Upgrades</h2>
+            <div class="upgrade-cards">
+                <div class="card">
+                    <img src="/images/flux-capacitor.jpg" alt="Flux Capacitor">
+                    <p>Flux Capacitor</p>
+                </div>
+                <div class="card">
+                    <img src="/images/flame-decals.jpg" alt="Flame Decals">
+                    <p>Flame Decals</p>
+                </div>
+                <div class="card">
+                    <img src="/images/bumper-stickers.jpg" alt="Bumper Stickers">
+                    <p>Bumper Stickers</p>
+                </div>
+                <div class="card">
+                    <img src="/images/hubcaps.jpg" alt="Hubcaps">
+                    <p>Hubcaps</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Reviews -->
+        <div class="grid-right">
+            <h2>DMC DeLorean Reviews</h2>
+            <ul class="reviews">
+                <li>So fast, it's like traveling in time - 4/5</li>
+                <li>Coolest ride on the road - 4/5</li>
+                <li>I'm feeling McFly - 5/5</li>
+                <li>The most futuristic ride of our day - 4.5/5</li>
+                <li>80s Living and Lavish - 5/5</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

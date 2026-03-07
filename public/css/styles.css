@@ -1,161 +1,184 @@
-/* ========================================
-   Global Styles
-   ======================================== */
+/* General Reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* Body */
 body {
-  background-color: #f4f4f9;
-  color: #333;
-  line-height: 1.6;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #222;
+    background-color: #f9f9f9;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-}
-
-/* ========================================
-   Header
-   ======================================== */
+/* Header */
 #top-header {
-  background-color: #0d1b2a;
-  color: white;
-  padding: 1rem 0;
-}
-
-#top-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.site-name a {
-  color: #e0e1dd;
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-#tools ul {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-}
-
-#tools ul li a {
-  color: #e0e1dd;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-#tools ul li a:hover {
-  background-color: #e0e1dd;
-  color: #0d1b2a;
-}
-
-/* ========================================
-   Hero Section
-   ======================================== */
-.hero {
-  background: linear-gradient(rgba(13,27,42,0.7), rgba(13,27,42,0.7)), url('/images/hero-car.jpg') no-repeat center center/cover;
-  color: white;
-  text-align: center;
-  padding: 4rem 1rem;
-}
-
-.hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  font-size: 1.2rem;
-}
-
-/* ========================================
-   Floating Car Cards
-   ======================================== */
-.car-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.car-card {
-  background-color: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.car-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-}
-
-.car-card img {
-  width: 100%;
-  display: block;
-}
-
-.car-card .card-content {
-  padding: 1rem;
-}
-
-.car-card .card-content h3 {
-  color: #0d1b2a;
-  margin-bottom: 0.5rem;
-}
-
-.car-card .card-content p {
-  font-size: 0.95rem;
-  color: #555;
-}
-
-/* ========================================
-   Footer
-   ======================================== */
-footer {
-  background-color: #0d1b2a;
-  color: #e0e1dd;
-  text-align: center;
-  padding: 1.5rem 1rem;
-  margin-top: 2rem;
-}
-
-/* ========================================
-   Responsive Media Queries
-   ======================================== */
-@media (max-width: 768px) {
-  .hero h2 {
-    font-size: 2rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
-  }
-
-  #top-header .container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  #tools ul {
-    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
+    padding: 1rem 2rem;
+    background-color: #1a1a1a;
+    color: white;
+}
+
+#top-header a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#top-header a:hover {
+    color: #ff6600;
+}
+
+/* Navigation */
+.main-nav {
+    background-color: #333;
+}
+
+.main-nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.main-nav li {
+    margin: 0 1rem;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    display: block;
+}
+
+.main-nav a:hover {
+    background-color: #ff6600;
+    border-radius: 5px;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #e6e6e6;
+    text-align: center;
+}
+
+.hero-image {
+    max-width: 500px;
+    width: 100%;
+    border-radius: 10px;
+    margin: 1rem;
+}
+
+.hero-text {
+    max-width: 500px;
+    margin: 1rem;
+}
+
+.featured-car {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.featured-car ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #ff6600;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #e65c00;
+}
+
+/* Grid Section */
+.grid-section {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.grid-left, .grid-right {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Upgrade Cards */
+.upgrade-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.upgrade-cards .card {
+    background: white;
+    border-radius: 10px;
+    padding: 0.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.upgrade-cards img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+}
+
+/* Reviews */
+.reviews li {
+    background: #fff;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+/* Footer */
+footer {
+    background-color: #1a1a1a;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+    }
+
+    .grid-section {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-nav ul {
+        flex-direction: column;
+    }
+
+    .main-nav li {
+        margin: 0.25rem 0;
+    }
 }
