@@ -182,3 +182,7 @@ footer {
         margin: 0.25rem 0;
     }
 }
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
