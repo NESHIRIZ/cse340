@@ -12,8 +12,8 @@ importers:
         specifier: ^16.0.3
         version: 16.6.1
       ejs:
-        specifier: ^4.0.1
-        version: 4.0.1
+        specifier: ^3.1.9
+        version: 3.1.10
       express:
         specifier: ^4.18.2
         version: 4.22.1
@@ -137,9 +137,9 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  ejs@4.0.1:
-    resolution: {integrity: sha512-krvQtxc0btwSm/nvnt1UpnaFDFVJpJ0fdckmALpCgShsr/iGYHTnJiUliZTgmzq/UxTX33TtOQVKaNigMQp/6Q==}
-    engines: {node: '>=0.12.18'}
+  ejs@3.1.10:
+    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
+    engines: {node: '>=0.10.0'}
     hasBin: true
 
   encodeurl@2.0.0:
@@ -614,7 +614,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  ejs@4.0.1:
+  ejs@3.1.10:
     dependencies:
       jake: 10.9.4
 
