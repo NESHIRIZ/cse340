@@ -1,42 +1,49 @@
 /* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
+ * Primary server file
+ ******************************************/
+
 /* ***********************
  * Require Statements
  *************************/
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
+require("dotenv").config()
 
-const env = require("dotenv").config()
 const app = express()
-const static = require("./routes/static")
 
+/* ***********************
+ * Routes
+ *************************/
+const staticRoutes = require("./routes/static")
 
-/* View Engine and Templates */
+/* ***********************
+ * View Engine
+ *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout")
 
-/* Routes */
-/*********************/ 
-app.use(static)
+/* ***********************
+ * Middleware
+ *************************/
+app.use(staticRoutes)
 
 /* ***********************
- * Local Server Information
- * Values from .env (environment) file
+ * Index Route
  *************************/
-const port = process.env.PORT
-const host = process.env.HOST
-
-/* ***********************
- * Log statement to confirm server operation
- *************************/
-app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
+app.get("/", function (req, res) {
+  res.render("index", { title: "Home" })
 })
 
-// Index Route
-app.get("/", function(req, res){
-   res.render("index", {title: "Home"})
+/* ***********************
+ * Server Information
+ *************************/
+const port = process.env.PORT || 3000
+const host = process.env.HOST || "localhost"
+
+/* ***********************
+ * Start Server
+ *************************/
+app.listen(port, () => {
+  console.log(`App running at http://${host}:${port}`)
 })
