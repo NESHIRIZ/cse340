@@ -13,19 +13,12 @@ const Util = {};
 Util.handleErrors = fn => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-module.exports = Util;
-
-
-const Util = {};
-
-// Dummy navigation function
+/* ****************************************
+ * Dummy Navigation Function
+ **************************************** */
 Util.getNav = async () => {
   return "<a href='/'>Home</a> | <a href='/about'>About</a>";
 };
-
-/* Higher-order function for handling errors */
-Util.handleErrors = fn => (req, res, next) =>
-  Promise.resolve(fn(req, res, next)).catch(next);
 
 /* ****************************************
  * Build Vehicle Detail HTML
@@ -35,25 +28,25 @@ Util.buildVehicleDetailHTML = (vehicle) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>${vehicle.make} ${vehicle.model} Details</title>
+      <title>${vehicle.inv_make} ${vehicle.inv_model} Details</title>
       <link rel="stylesheet" href="/css/style.css">
       <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
       <header>
-        <h1>${vehicle.make} ${vehicle.model}</h1>
+        <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
         <nav>${Util.getNav()}</nav>
       </header>
 
       <main>
         <div class="vehicle-detail-container">
-          <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" class="vehicle-image">
+          <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" class="vehicle-image">
           <ul class="vehicle-info">
-            <li><strong>Price:</strong> $${Number(vehicle.price).toLocaleString()}</li>
-            <li><strong>Mileage:</strong> ${Number(vehicle.mileage).toLocaleString()} km</li>
-            <li><strong>Year:</strong> ${vehicle.year}</li>
-            <li><strong>Color:</strong> ${vehicle.color}</li>
-            <li><strong>Description:</strong> ${vehicle.description}</li>
+            <li><strong>Price:</strong> $${Number(vehicle.inv_price).toLocaleString()}</li>
+            <li><strong>Mileage:</strong> ${Number(vehicle.inv_miles).toLocaleString()} km</li>
+            <li><strong>Year:</strong> ${vehicle.inv_year}</li>
+            <li><strong>Color:</strong> ${vehicle.inv_color}</li>
+            <li><strong>Description:</strong> ${vehicle.inv_description}</li>
           </ul>
         </div>
       </main>
