@@ -1,6 +1,5 @@
-/* ******************************************
- * Primary server file
- ******************************************/
+const utilities = require("./utilities");
+const baseController = require("./controllers/baseController");
 
 /* ***********************
  * Require Statements
@@ -66,3 +65,12 @@ app.use(async (err, req, res, next) => {
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'});
 });
+
+const utilities = require("./utilities");
+
+// Index route
+app.get("/", utilities.handleErrors(baseController.buildHome));
+
+const vehicleRoutes = require('./routes/vehicles');
+
+app.use('/', vehicleRoutes); // use the route
