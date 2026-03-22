@@ -66,7 +66,6 @@ app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'});
 });
 
-const utilities = require("./utilities");
 
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome));
