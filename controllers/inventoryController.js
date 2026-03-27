@@ -1,5 +1,5 @@
 const inventoryModel = require('../models/inventoryModel');
-const { buildVehicleDetailHTML } = require('../utilities/index');
+const utilities = require('../utilities/index');
 
 exports.getVehicleDetail = async (req, res, next) => {
   try {
@@ -7,14 +7,21 @@ exports.getVehicleDetail = async (req, res, next) => {
     const vehicle = await inventoryModel.getVehicleById(vehicleId);
 
     if (!vehicle) {
-      // If no vehicle found, show an error page
-      res.status(404).render('error', { message: 'Vehicle not found' });
-      return;
+      return res.status(404).render('errors/error', {
+        title: 'Vehicle Not Found',
+        message: 'Vehicle not found',
+        nav: utilities.getNav()
+      });
     }
 
-    const htmlContent = buildVehicleDetailHTML(vehicle);
-    res.send(htmlContent);
+    const nav = utilities.getNav();
+
+res.render("vehicle-detail", {
+  title: `${vehicle.inv_make} ${vehicle.inv_model}`,
+  nav,
+  vehicle
+});
   } catch (error) {
-    next(error); // Pass error to your middleware
+    next(error);
   }
 };

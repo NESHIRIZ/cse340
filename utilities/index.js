@@ -7,17 +7,16 @@ const Util = {};
 
 /* ****************************************
  * Middleware For Handling Errors
- * Wrap other functions in this for 
- * General Error Handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
 /* ****************************************
- * Dummy Navigation Function
- **************************************** */
-Util.getNav = async () => {
-  return "<a href='/'>Home</a> | <a href='/about'>About</a>";
+ * Navigation Function
+ ******************************************/
+
+  Util.getNav = () => {
+  return "<a href='/'>Home</a>";
 };
 
 /* ****************************************
@@ -29,7 +28,7 @@ Util.buildVehicleDetailHTML = (vehicle) => {
     <html>
     <head>
       <title>${vehicle.inv_make} ${vehicle.inv_model} Details</title>
-      <link rel="stylesheet" href="/css/style.css">
+      <link rel="stylesheet" href="/css/styles.css">
       <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
