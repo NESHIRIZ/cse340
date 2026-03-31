@@ -1,23 +1,31 @@
-exports.inventoryRules = () => {
-  return [];
+const { body, validationResult } = require("express-validator");
+
+/* ****************************************
+ * Classification Rules
+ **************************************** */
+exports.classificationRules = () => {
+  return [
+    body("classification_name")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Classification name is required.")
+      .isAlphanumeric()
+      .withMessage("No spaces or special characters allowed.")
+  ];
 };
 
-exports.checkInventoryData = async (req, res, next) => {
-  const errors = [];
+/* ****************************************
+ * Check Classification Data
+ **************************************** */
+exports.checkClassificationData = (req, res, next) => {
+  const errors = validationResult(req);
 
-  if (!req.body.inv_make) errors.push("Make required");
-  if (!req.body.inv_model) errors.push("Model required");
-
-  if (errors.length > 0) {
-    const utilities = require('../utilities/index');
-    const classificationSelect = await utilities.buildClassificationList(req.body.classification_id);
-
-    return res.render("inventory/add-inventory", {
-      title: "Add Vehicle",
-      errors,
-      classificationSelect,
-      ...req.body,
-      nav: await utilities.getNav()
+  if (!errors.isEmpty()) {
+    return res.status(400).render("inventory/add-classification", {
+      title: "Add Classification",
+      errors: errors.array(),
+      classification_name: req.body.classification_name,
+      nav: res.locals.nav
     });
   }
 
