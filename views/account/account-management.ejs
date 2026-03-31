@@ -1,0 +1,20 @@
+<div id="message-container">
+  <% if (message) { %>
+    <div class="notice"><%= message %></div>
+  <% } %>
+</div>
+
+<h1><%= title %></h1>
+
+<h2>Welcome <%= first_name %></h2>
+
+<% if (account_type === 'Employee' || account_type === 'Admin') { %>
+  <h3>Inventory Management</h3>
+  <p>
+    <a href="/inv/" class="btn">Manage Inventory</a>
+  </p>
+<% } %>
+
+<div class="account-links">
+  <a href="/account/update/<%= account_id %>" class="btn">Update Account Information</a>
+</div>

@@ -1,0 +1,12 @@
+<div id="message-container">
+  <% if (message) { %>
+    <div class="notice"><%= message %></div>
+  <% } %>
+</div>
+
+<h1><%= title %></h1>
+
+<div class="management-links">
+  <a href="/inv/add-classification" class="btn">Add New Classification</a>
+  <a href="/inv/add-inventory" class="btn">Add New Vehicle</a>
+</div>

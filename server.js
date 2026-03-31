@@ -1,12 +1,17 @@
-const utilities = require("./utilities");
-const baseController = require("./controllers/baseController");
+/* ***********************
+ * Load Environment Variables
+ *************************/
+require("dotenv").config();
 
 /* ***********************
  * Require Statements
  *************************/
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
-require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const utilities = require("./utilities");
+const baseController = require("./controllers/baseController");
+const { checkJWTToken } = require("./utilities/auth");
 
 const app = express();
 
@@ -15,6 +20,8 @@ const app = express();
  *************************/
 const staticRoutes = require("./routes/static");
 const vehicleRoutes = require("./routes/vehicles");
+const inventoryRoutes = require("./routes/inventory");
+const accountsRoutes = require("./routes/accounts");
 
 /* ***********************
  * View Engine
@@ -26,7 +33,26 @@ app.set("layout", "./layouts/layout");
 /* ***********************
  * Middleware
  *************************/
+// Parse form data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Parse cookies
+app.use(cookieParser());
+
+// Static files
 app.use(staticRoutes);
+
+// Simple session-like object if express-session isn't available
+app.use((req, res, next) => {
+  if (!req.session) {
+    req.session = {};
+  }
+  next();
+});
+
+// JWT check middleware (available in all routes)
+app.use(utilities.handleErrors(checkJWTToken));
 
 /* ***********************
  * Routes
@@ -35,8 +61,14 @@ app.use(staticRoutes);
 // Home route (MVC)
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
+// Accounts routes
+app.use("/account", accountsRoutes);
+
 // Vehicle routes
 app.use("/vehicles", vehicleRoutes);
+
+// Inventory management routes
+app.use("/inv", inventoryRoutes);
 
 /* ***********************
  * Server Information

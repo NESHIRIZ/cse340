@@ -2,6 +2,8 @@
  * Utilities file
  **************************************** */
 
+const inventoryModel = require('../models/inventoryModel');
+
 // Create an object to hold utility functions
 const Util = {};
 
@@ -15,8 +17,53 @@ Util.handleErrors = fn => (req, res, next) =>
  * Navigation Function
  ******************************************/
 
-  Util.getNav = () => {
-  return "<a href='/'>Home</a>";
+Util.getNav = async () => {
+  try {
+    let data = await inventoryModel.getClassifications();
+    let nav = '<ul>';
+    nav += '<li><a href="/" title="Home page">Home</a></li>';
+    data.rows.forEach((row) => {
+      nav += '<li>';
+      nav += '<a href="/vehicles/type/' + row.classification_id + '" title="See our ' + row.classification_name + ' lineup">';
+      nav += row.classification_name + '</a>';
+      nav += '</li>';
+    });
+    nav += '</ul>';
+    return nav;
+  } catch (error) {
+    // Fallback navigation if database is unavailable
+    let nav = '<ul>';
+    nav += '<li><a href="/" title="Home page">Home</a></li>';
+    nav += '</ul>';
+    return nav;
+  }
+};
+
+/* ****************************************
+ * Build Classification List for Select
+ **************************************** */
+Util.buildClassificationList = async (classification_id = null) => {
+  try {
+    let data = await inventoryModel.getClassifications();
+    let classificationList =
+      '<select name="classification_id" id="classificationList" required>';
+    classificationList += "<option value=''>Choose a Classification</option>";
+    data.rows.forEach((row) => {
+      classificationList += '<option value="' + row.classification_id + '"';
+      if (
+        classification_id != null &&
+        row.classification_id == classification_id
+      ) {
+        classificationList += " selected ";
+      }
+      classificationList += ">" + row.classification_name + "</option>";
+    });
+    classificationList += "</select>";
+    return classificationList;
+  } catch (error) {
+    // Fallback if database is unavailable
+    return '<select name="classification_id" id="classificationList" required><option value="">Choose a Classification</option></select>';
+  }
 };
 
 /* ****************************************
@@ -34,7 +81,6 @@ Util.buildVehicleDetailHTML = (vehicle) => {
     <body>
       <header>
         <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
-        <nav>${Util.getNav()}</nav>
       </header>
 
       <main>

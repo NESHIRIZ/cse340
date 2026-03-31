@@ -1,0 +1,120 @@
+<div id="message-container">
+  <% if (errors) { %>
+    <div class="error-container">
+      <h3>The following errors were detected:</h3>
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+</div>
+
+<h1><%= title %></h1>
+
+<!-- Account Update Form -->
+<form method="POST" action="/account/update" class="form">
+  <fieldset>
+    <legend>Update Account Information</legend>
+
+    <label for="firstName">First Name:</label>
+    <input
+      type="text"
+      id="firstName"
+      name="first_name"
+      value="<%= typeof account.first_name !== 'undefined' ? account.first_name : '' %>"
+      required
+      maxlength="50"
+    />
+
+    <label for="lastName">Last Name:</label>
+    <input
+      type="text"
+      id="lastName"
+      name="last_name"
+      value="<%= typeof account.last_name !== 'undefined' ? account.last_name : '' %>"
+      required
+      maxlength="50"
+    />
+
+    <label for="email">Email:</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      value="<%= typeof account.email !== 'undefined' ? account.email : '' %>"
+      required
+    />
+
+    <input type="hidden" name="account_id" value="<%= account.account_id %>" />
+
+    <button type="submit" class="btn">Update Account</button>
+  </fieldset>
+</form>
+
+<!-- Change Password Form -->
+<form method="POST" action="/account/password" class="form">
+  <fieldset>
+    <legend>Change Password</legend>
+
+    <label for="password">New Password:</label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      required
+      minlength="12"
+    />
+    <p class="form-note">
+      Password requirements:
+      <ul>
+        <li>At least 12 characters long</li>
+        <li>At least 1 uppercase letter</li>
+        <li>At least 1 number</li>
+        <li>At least 1 special character (!@#$%^&*)</li>
+      </ul>
+    </p>
+
+    <input type="hidden" name="account_id" value="<%= account.account_id %>" />
+
+    <button type="submit" class="btn">Change Password</button>
+  </fieldset>
+</form>
+
+<script>
+  // Client-side validation for account update form
+  document.querySelector('form[action="/account/update"]').addEventListener('submit', function(e) {
+    const errors = [];
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    if (!firstName) errors.push("First name is required.");
+    if (!lastName) errors.push("Last name is required.");
+    if (!email) errors.push("Email is required.");
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("Please provide a valid email address.");
+
+    if (errors.length > 0) {
+      e.preventDefault();
+      alert(errors.join('\n'));
+    }
+  });
+
+  // Client-side validation for password form
+  document.querySelector('form[action="/account/password"]').addEventListener('submit', function(e) {
+    const errors = [];
+    const password = document.getElementById('password').value;
+
+    if (!password) errors.push("Password is required.");
+    if (password && password.length < 12) errors.push("Password must be at least 12 characters long.");
+    if (password && !/[A-Z]/.test(password)) errors.push("Password must contain at least 1 uppercase letter.");
+    if (password && !/[0-9]/.test(password)) errors.push("Password must contain at least 1 number.");
+    if (password && !/[!@#$%^&*]/.test(password)) errors.push("Password must contain at least 1 special character (!@#$%^&*).");
+
+    if (errors.length > 0) {
+      e.preventDefault();
+      alert(errors.join('\n'));
+    }
+  });
+</script>

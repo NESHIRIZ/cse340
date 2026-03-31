@@ -1,0 +1,31 @@
+<% if (errors) { %>
+  <div class="error-container">
+    <ul>
+      <% errors.forEach(error => { %>
+        <li><%= error %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<h1><%= title %></h1>
+
+<form method="POST" action="/inv/add-inventory" id="addVehicleForm">
+
+<label>Classification:</label>
+<%- classificationSelect %>
+
+<input type="text" name="inv_make" value="<%= inv_make || '' %>" required>
+<input type="text" name="inv_model" value="<%= inv_model || '' %>" required>
+<input type="number" name="inv_year" value="<%= inv_year || '' %>" required>
+<textarea name="inv_description"><%= inv_description || '' %></textarea>
+<input type="number" name="inv_price" value="<%= inv_price || '' %>" required>
+<input type="number" name="inv_miles" value="<%= inv_miles || '' %>" required>
+<input type="text" name="inv_color" value="<%= inv_color || '' %>" required>
+
+<input type="text" name="inv_image" value="<%= inv_image || '/images/vehicles/no-image.png' %>" required>
+<input type="text" name="inv_thumbnail" value="<%= inv_thumbnail || '/images/vehicles/no-image-tn.png' %>" required>
+
+<button type="submit">Add Vehicle</button>
+
+</form>
