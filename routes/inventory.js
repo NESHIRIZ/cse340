@@ -31,12 +31,11 @@ router.get(
 );
 
 // Process add classification (POST)
-
-  router.post(
+router.post(
   "/add-classification",
-  validate.classificationRules(),
-  validate.checkClassificationData,
-  invController.addClassification
+  // validate.classificationRules(),
+  // validate.checkClassificationData,
+  utilities.handleErrors(inventoryController.addClassification)
 );
 
 /* ***********************

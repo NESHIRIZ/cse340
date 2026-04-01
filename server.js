@@ -61,6 +61,9 @@ app.use(utilities.handleErrors(checkJWTToken));
 // Home route (MVC)
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
+// Error trigger route
+app.get("/error", utilities.handleErrors(baseController.triggerError));
+
 // Accounts routes
 app.use("/account", accountsRoutes);
 

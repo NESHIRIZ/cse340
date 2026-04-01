@@ -71,37 +71,49 @@ Util.buildClassificationList = async (classification_id = null) => {
  **************************************** */
 Util.buildVehicleDetailHTML = (vehicle) => {
   return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>${vehicle.inv_make} ${vehicle.inv_model} Details</title>
-      <link rel="stylesheet" href="/css/styles.css">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-      <header>
-        <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
-      </header>
-
-      <main>
-        <div class="vehicle-detail-container">
-          <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" class="vehicle-image">
-          <ul class="vehicle-info">
-            <li><strong>Price:</strong> $${Number(vehicle.inv_price).toLocaleString()}</li>
-            <li><strong>Mileage:</strong> ${Number(vehicle.inv_miles).toLocaleString()} km</li>
-            <li><strong>Year:</strong> ${vehicle.inv_year}</li>
-            <li><strong>Color:</strong> ${vehicle.inv_color}</li>
-            <li><strong>Description:</strong> ${vehicle.inv_description}</li>
-          </ul>
-        </div>
-      </main>
-
-      <footer>
-        <p>&copy; 2026 Your Dealership Name</p>
-      </footer>
-    </body>
-    </html>
+    <div class="vehicle-detail-container">
+      <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" class="vehicle-image">
+      <ul class="vehicle-info">
+        <li><strong>Price:</strong> $${Number(vehicle.inv_price).toLocaleString()}</li>
+        <li><strong>Mileage:</strong> ${Number(vehicle.inv_miles).toLocaleString()} km</li>
+        <li><strong>Year:</strong> ${vehicle.inv_year}</li>
+        <li><strong>Color:</strong> ${vehicle.inv_color}</li>
+        <li><strong>Description:</strong> ${vehicle.inv_description}</li>
+      </ul>
+    </div>
   `;
 };
 
-module.exports = Util;
+/* ****************************************
+ * Build Classification Grid for Home Page
+ **************************************** */
+Util.buildClassificationGrid = async () => {
+  try {
+    let data = await inventoryModel.getClassifications();
+    let grid = '<div class="classification-grid">';
+    data.rows.forEach((row) => {
+      grid += '<div class="classification-card">';
+      grid += '<h3>' + row.classification_name + '</h3>';
+      grid += '<p>' + getClassificationDescription(row.classification_name) + '</p>';
+      grid += '<a href="/vehicles/type/' + row.classification_id + '" class="btn-secondary">View ' + row.classification_name + 's</a>';
+      grid += '</div>';
+    });
+    grid += '</div>';
+    return grid;
+  } catch (error) {
+    return '<p>Unable to load classifications.</p>';
+  }
+};
+
+/* Helper function for classification descriptions */
+function getClassificationDescription(name) {
+  const descriptions = {
+    'Sedan': 'Comfortable and efficient vehicles for everyday driving.',
+    'Sports': 'High-performance vehicles for the thrill seeker.',
+    'SUV': 'Spacious and versatile for family adventures.',
+    'Utility': 'Unique and special vehicles for the discerning buyer.',
+    'Truck': 'Rugged and powerful for work and play.',
+    'Custom': 'Unique and special vehicles for the discerning buyer.'
+  };
+  return descriptions[name] || 'Explore our ' + name + ' collection.';
+}

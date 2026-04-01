@@ -111,6 +111,63 @@ body {
     background-color: #e65c00;
 }
 
+.btn-secondary {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background-color: #555;
+}
+
+/* Vehicle Classifications Section */
+.vehicle-classifications {
+    padding: 2rem;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+.vehicle-classifications h2 {
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.classification-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.classification-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.classification-card:hover {
+    transform: translateY(-5px);
+}
+
+.classification-card h3 {
+    margin-bottom: 0.5rem;
+    color: #ff6600;
+}
+
+.classification-card p {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
 /* Grid Section */
 .grid-section {
     display: flex;
@@ -154,12 +211,56 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
-/* Footer */
-footer {
-    background-color: #1a1a1a;
-    color: white;
-    text-align: center;
-    padding: 1rem;
+/* Vehicle Grid for Classification Pages */
+.vehicles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.vehicle-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-5px);
+}
+
+.vehicle-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.vehicle-thumbnail {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.vehicle-card h3 {
+  padding: 1rem;
+  margin: 0;
+  color: #333;
+}
+
+.vehicle-year, .vehicle-price {
+  padding: 0 1rem;
+  margin: 0;
+  color: #666;
+}
+
+.vehicle-price {
+  font-weight: bold;
+  color: #ff6600;
+  padding-bottom: 1rem;
 }
 
 /* Responsive Media Queries */
@@ -196,11 +297,13 @@ body {
   gap: 20px;
   max-width: 800px;
   margin: auto;
+  padding: 2rem;
 }
 
 .vehicle-image {
   flex: 1 1 300px;
   max-width: 100%;
+  border-radius: 10px;
 }
 
 .vehicle-info {
@@ -211,6 +314,22 @@ body {
 
 .vehicle-info li {
   margin-bottom: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Responsive for vehicle detail */
+@media (max-width: 768px) {
+  .vehicle-detail-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .vehicle-info {
+    width: 100%;
+  }
 }
 
 /* Form Styles */

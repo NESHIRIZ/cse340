@@ -18,11 +18,12 @@ exports.getVehicleDetail = async (req, res, next) => {
     }
 
     const nav = await utilities.getNav();
+    const vehicleHTML = utilities.buildVehicleDetailHTML(vehicle);
 
     res.render("vehicle-detail", {
       title: `${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
-      vehicle
+      vehicleHTML
     });
   } catch (error) {
     next(error);
