@@ -31,3 +31,152 @@ exports.checkClassificationData = (req, res, next) => {
 
   next();
 };
+
+/* ****************************************
+ * Inventory Rules
+ **************************************** */
+exports.inventoryRules = () => {
+  return [
+    body("classification_id")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Classification is required."),
+
+    body("inv_make")
+      .trim()
+      .isLength({ min: 3 })
+      .withMessage("Make must be at least 3 characters."),
+
+    body("inv_model")
+      .trim()
+      .isLength({ min: 3 })
+      .withMessage("Model must be at least 3 characters."),
+
+    body("inv_description")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Description is required."),
+
+    body("inv_image")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Image path is required."),
+
+    body("inv_thumbnail")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Thumbnail path is required."),
+
+    body("inv_price")
+      .isFloat({ min: 0 })
+      .withMessage("Price must be a positive number."),
+
+    body("inv_year")
+      .isInt({ min: 1900, max: new Date().getFullYear() + 1 })
+      .withMessage("Year must be a valid year."),
+
+    body("inv_miles")
+      .isInt({ min: 0 })
+      .withMessage("Miles must be a positive integer."),
+
+    body("inv_color")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Color is required.")
+  ];
+};
+
+/* ****************************************
+ * Check Inventory Data
+ **************************************** */
+exports.checkInventoryData = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("inventory/add-inventory", {
+      title: "Add Inventory",
+      errors: errors.array(),
+      ...req.body,
+      nav: res.locals.nav
+    });
+  }
+
+  next();
+};
+
+/* ****************************************
+ * Update Account Rules
+ **************************************** */
+exports.updateAccountRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("First name is required."),
+
+    body("account_lastname")
+      .trim()
+      .isLength({ min: 2 })
+      .withMessage("Last name must be at least 2 characters."),
+
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+  ];
+};
+
+/* ****************************************
+ * Check Update Account Data
+ **************************************** */
+exports.checkUpdateAccountData = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("account/account-update", {
+      title: "Update Account",
+      errors: errors.array(),
+      ...req.body,
+      nav: res.locals.nav
+    });
+  }
+
+  next();
+};
+
+/* ****************************************
+ * Password Rules
+ **************************************** */
+exports.passwordRules = () => {
+  return [
+    body("account_password")
+      .trim()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements.")
+  ];
+};
+
+/* ****************************************
+ * Check Password Data
+ **************************************** */
+exports.checkPasswordData = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("account/account-update", {
+      title: "Update Account",
+      errors: errors.array(),
+      ...req.body,
+      nav: res.locals.nav
+    });
+  }
+
+  next();
+};

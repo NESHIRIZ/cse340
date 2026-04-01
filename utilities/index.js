@@ -117,3 +117,5 @@ function getClassificationDescription(name) {
   };
   return descriptions[name] || 'Explore our ' + name + ' collection.';
 }
+
+module.exports = Util;
