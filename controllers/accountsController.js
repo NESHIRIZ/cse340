@@ -164,6 +164,7 @@ exports.buildAccountManagement = async (req, res, next) => {
       title: 'Account Management',
       nav,
       message,
+      account_id,
       first_name,
       last_name,
       email,

@@ -114,17 +114,17 @@ exports.checkInventoryData = async (req, res, next) => {
  **************************************** */
 exports.updateAccountRules = () => {
   return [
-    body("account_firstname")
+    body("first_name")
       .trim()
       .isLength({ min: 1 })
       .withMessage("First name is required."),
 
-    body("account_lastname")
+    body("last_name")
       .trim()
       .isLength({ min: 2 })
       .withMessage("Last name must be at least 2 characters."),
 
-    body("account_email")
+    body("email")
       .trim()
       .isEmail()
       .normalizeEmail()
@@ -140,10 +140,11 @@ exports.checkUpdateAccountData = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return res.status(400).render("account/account-update", {
-      title: "Update Account",
+      title: "Account Update",
       errors: errors.array(),
-      ...req.body,
-      nav: res.locals.nav
+      account: req.body,
+      nav: res.locals.nav,
+      messages: req.flash()
     });
   }
 
@@ -155,16 +156,16 @@ exports.checkUpdateAccountData = (req, res, next) => {
  **************************************** */
 exports.passwordRules = () => {
   return [
-    body("account_password")
+    body("password")
       .trim()
       .isStrongPassword({
-        minLength: 12,
+        minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
         minNumbers: 1,
-        minSymbols: 1,
+        minSymbols: 0,
       })
-      .withMessage("Password does not meet requirements.")
+      .withMessage("Password must be at least 8 characters and contain uppercase, lowercase, and numbers.")
   ];
 };
 
@@ -176,9 +177,9 @@ exports.checkPasswordData = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return res.status(400).render("account/account-update", {
-      title: "Update Account",
+      title: "Account Update",
       errors: errors.array(),
-      ...req.body,
+      account: req.body,
       nav: res.locals.nav,
       messages: req.flash()
     });
