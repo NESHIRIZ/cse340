@@ -43,44 +43,36 @@ app.use(cookieParser());
 // Static files
 app.use(staticRoutes);
 
-// Simple session-like object if express-session isn't available
+// Simple session-like object and flash implementation
 app.use((req, res, next) => {
   if (!req.session) {
-    req.session = {};
+    req.session = { messages: {} };
   }
-
-  // Simple flash message implementation using cookie
-  req.flash = (type, msg) => {
-    if (type && msg) {
-      let flash = {};
-      if (req.cookies.flash) {
-        try {
-          flash = JSON.parse(req.cookies.flash);
-        } catch (err) {
-          flash = {};
-        }
+  if (!req.session.messages) {
+    req.session.messages = {};
+  }
+  
+  // Simple flash implementation
+  req.flash = function(type, message) {
+    if (typeof type === 'string' && typeof message === 'string') {
+      // Set a message
+      if (!req.session.messages[type]) {
+        req.session.messages[type] = [];
       }
-      if (!flash[type]) {
-        flash[type] = [];
-      }
-      flash[type].push(msg);
-      res.cookie('flash', JSON.stringify(flash), { httpOnly: true });
-      return;
+      req.session.messages[type].push(message);
+    } else if (typeof type === 'string') {
+      // Get messages of a specific type
+      const messages = req.session.messages[type] || [];
+      req.session.messages[type] = [];
+      return messages;
+    } else {
+      // Get all messages
+      const allMessages = req.session.messages;
+      req.session.messages = {};
+      return allMessages;
     }
-
-    // get + clear flash
-    let data = {};
-    if (req.cookies.flash) {
-      try {
-        data = JSON.parse(req.cookies.flash);
-      } catch (err) {
-        data = {};
-      }
-    }
-    res.clearCookie('flash');
-    return data;
   };
-
+  
   next();
 });
 

@@ -14,7 +14,7 @@ const prepareData = async (req, res, next) => {
 };
 
 /* ***********************
- * Login View
+ * Build Login View
  *************************/
 router.get(
   '/login',
@@ -23,18 +23,7 @@ router.get(
 );
 
 /* ***********************
- * Process Login
- *************************/
-router.post(
-  '/login',
-  utilities.handleErrors(prepareData),
-  validate.loginRules(),
-  validate.checkLoginData,
-  utilities.handleErrors(accountsController.login)
-);
-
-/* ***********************
- * Register View
+ * Build Registration View
  *************************/
 router.get(
   '/register',
@@ -48,9 +37,20 @@ router.get(
 router.post(
   '/register',
   utilities.handleErrors(prepareData),
-  validate.registerRules(),
-  validate.checkRegisterData,
-  utilities.handleErrors(accountsController.register)
+  validate.registrationRules(),
+  validate.checkRegData,
+  utilities.handleErrors(accountsController.registerAccount)
+);
+
+/* ***********************
+ * Process Login
+ *************************/
+router.post(
+  '/login',
+  utilities.handleErrors(prepareData),
+  validate.loginRules(),
+  validate.checkLoginData,
+  utilities.handleErrors(accountsController.accountLogin)
 );
 
 /* ***********************

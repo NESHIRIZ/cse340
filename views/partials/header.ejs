@@ -1,13 +1,32 @@
 <header id="top-header">
-    <div class="siteName">
-        <a href="/" title="Return to home page">REAL Motors EXPRESS</a>
+    <div class="header-logo-container">
+        <svg class="header-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Car body -->
+            <rect x="15" y="45" width="70" height="30" rx="5" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+            <!-- Top of car -->
+            <rect x="30" y="30" width="40" height="18" rx="3" fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+            <!-- Windows -->
+            <rect x="35" y="35" width="12" height="10" fill="#85C1E9"/>
+            <rect x="53" y="35" width="12" height="10" fill="#85C1E9"/>
+            <!-- Wheels -->
+            <circle cx="30" cy="75" r="8" fill="#34495E" stroke="#2C3E50" stroke-width="2"/>
+            <circle cx="70" cy="75" r="8" fill="#34495E" stroke="#2C3E50" stroke-width="2"/>
+            <!-- Wheel rims -->
+            <circle cx="30" cy="75" r="5" fill="#95A5A6"/>
+            <circle cx="70" cy="75" r="5" fill="#95A5A6"/>
+        </svg>
+        <div class="siteName">
+            <a href="/" title="Return to home page">
+                <span class="brand-name">REAL Motors EXPRESS</span>
+            </a>
+        </div>
     </div>
     <div id="tools">
         <% if (user && user.account_id) { %>
-            <a href="/account" title="View your account">Welcome <%= user.first_name %></a>
-            <a href="/account/logout" title="Logout">Logout</a>
+            <a href="/account" title="View your account" class="tool-link">Welcome <%= user.first_name %></a>
+            <a href="/account/logout" title="Logout" class="tool-link">Logout</a>
         <% } else { %>
-            <a href="/account/login" title="Click to log in">My Account</a>
+            <a href="/account/login" title="Click to log in" class="tool-link">My Account</a>
         <% } %>
     </div>
 </header>

@@ -4,6 +4,154 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 /* *****************************
+ * Build Login View
+ *************************** */
+exports.buildLogin = async (req, res, next) => {
+  try {
+    const nav = res.locals.nav;
+    res.render('./account/login', {
+      title: 'Login',
+      nav,
+      errors: null,
+      messages: req.flash()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* *****************************
+ * Build Registration View
+ *************************** */
+exports.buildRegister = async (req, res, next) => {
+  try {
+    const nav = res.locals.nav;
+    res.render('./account/register', {
+      title: 'Register',
+      nav,
+      errors: null,
+      first_name: '',
+      last_name: '',
+      email: '',
+      messages: req.flash()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* *****************************
+ * Register Account
+ *************************** */
+exports.registerAccount = async (req, res, next) => {
+  try {
+    const nav = res.locals.nav;
+    const { first_name, last_name, email, password } = req.body;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Check if email already exists
+    const existingAccount = await accountsModel.getAccountByEmail(email);
+    if (existingAccount) {
+      req.flash('error', 'Email already registered. Please login or use a different email.');
+      return res.status(400).render('./account/register', {
+        title: 'Register',
+        nav,
+        errors: ['Email already registered'],
+        first_name,
+        last_name,
+        email,
+        messages: req.flash()
+      });
+    }
+
+    // Register the new account
+    const result = await accountsModel.registerAccount(first_name, last_name, email, hashedPassword);
+
+    if (!result) {
+      req.flash('error', 'Registration failed. Please try again.');
+      return res.status(400).render('./account/register', {
+        title: 'Register',
+        nav,
+        errors: ['Registration failed'],
+        first_name,
+        last_name,
+        email,
+        messages: req.flash()
+      });
+    }
+
+    req.flash('notice', 'Registration successful! Please login.');
+    res.redirect('/account/login');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* *****************************
+ * Account Login
+ *************************** */
+exports.accountLogin = async (req, res, next) => {
+  try {
+    const nav = res.locals.nav;
+    const { email, password } = req.body;
+
+    // Get account by email
+    const account = await accountsModel.getAccountByEmail(email);
+
+    if (!account) {
+      req.flash('error', 'Invalid email or password.');
+      return res.status(401).render('./account/login', {
+        title: 'Login',
+        nav,
+        errors: ['Invalid email or password'],
+        email,
+        messages: req.flash()
+      });
+    }
+
+    // Compare passwords
+    const passwordMatch = await bcrypt.compare(password, account.password);
+
+    if (!passwordMatch) {
+      req.flash('error', 'Invalid email or password.');
+      return res.status(401).render('./account/login', {
+        title: 'Login',
+        nav,
+        errors: ['Invalid email or password'],
+        email,
+        messages: req.flash()
+      });
+    }
+
+    // Create JWT token
+    const token = jwt.sign(
+      { account_id: account.account_id, email: account.email },
+      process.env.ACCESS_TOKEN_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+
+    // Set cookie
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+
+    // Set session
+    req.session.user = {
+      account_id: account.account_id,
+      first_name: account.first_name,
+      last_name: account.last_name,
+      email: account.email,
+      account_type: account.account_type
+    };
+
+    req.flash('notice', 'You have successfully logged in!');
+    res.redirect('/account');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* *****************************
  * Build Account Management View
  *************************** */
 exports.buildAccountManagement = async (req, res, next) => {
@@ -19,7 +167,8 @@ exports.buildAccountManagement = async (req, res, next) => {
       first_name,
       last_name,
       email,
-      account_type
+      account_type,
+      messages: req.flash()
     });
 
     // Clear the message after displaying it

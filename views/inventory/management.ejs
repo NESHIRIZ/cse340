@@ -1,14 +1,35 @@
 <div id="message-container">
-  <% if (messages && messages.notice) { %>
+  <% if (messages && messages.notice && messages.notice.length > 0) { %>
     <% messages.notice.forEach(msg => { %>
-      <div class="notice"><%= msg %></div>
+      <div class="alert alert-success">
+        <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%= msg %>
+      </div>
+    <% }); %>
+  <% } %>
+  <% if (messages && messages.error && messages.error.length > 0) { %>
+    <% messages.error.forEach(msg => { %>
+      <div class="alert alert-error">
+        <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%= msg %>
+      </div>
     <% }); %>
   <% } %>
 </div>
 
-<h1><%= title %></h1>
+<h1>Inventory Management</h1>
+<p class="subtitle">Manage vehicle classifications and inventory</p>
 
-<div class="management-links">
-  <a href="/inv/add-classification" class="btn">Add New Classification</a>
-  <a href="/inv/add-inventory" class="btn">Add New Vehicle</a>
+<div class="management-actions">
+  <div class="action-card">
+    <h2>Classifications</h2>
+    <p>Add or manage vehicle classifications such as Sedan, SUV, Sports, etc.</p>
+    <a href="/inv/add-classification" class="btn btn-primary">+ Add New Classification</a>
+  </div>
+
+  <div class="action-card">
+    <h2>Vehicles</h2>
+    <p>Add or manage individual vehicles in your inventory.</p>
+    <a href="/inv/add-inventory" class="btn btn-primary">+ Add New Vehicle</a>
+  </div>
 </div>

@@ -84,7 +84,8 @@ exports.buildAddClassificationView = async (req, res, next) => {
   res.render("./inventory/add-classification", {
     title: "Add Classification",
     nav,
-    errors: null
+    errors: null,
+    messages: req.flash()
   });
 };
 
@@ -97,11 +98,13 @@ exports.addClassification = async (req, res, next) => {
   const result = await inventoryModel.addClassification(classification_name);
 
   if (!result || result.error || typeof result === 'string') {
+    req.flash("error", "Failed to add classification. Please try again.");
     return res.status(400).render("./inventory/add-classification", {
       title: "Add Classification",
       nav: await utilities.getNav(),
       errors: ['Failed to add classification'],
-      classification_name
+      classification_name,
+      messages: req.flash()
     });
   }
 
@@ -120,7 +123,8 @@ exports.buildAddInventoryView = async (req, res, next) => {
     title: "Add Vehicle",
     nav,
     classificationSelect,
-    errors: null
+    errors: null,
+    messages: req.flash()
   });
 };
 
@@ -156,12 +160,14 @@ exports.addInventory = async (req, res, next) => {
 
   if (!result || result.error || typeof result === 'string') {
     const classificationSelect = await utilities.buildClassificationList(classification_id);
+    req.flash("error", "Failed to add vehicle. Please try again.");
 
     return res.status(400).render("./inventory/add-inventory", {
       title: "Add Vehicle",
       nav: await utilities.getNav(),
       classificationSelect,
       errors: ['Failed to add vehicle'],
+      messages: req.flash(),
       ...req.body
     });
   }

@@ -6,13 +6,11 @@ const bcrypt = require('bcryptjs');
  *************************** */
 exports.registerAccount = async (first_name, last_name, email, password) => {
   try {
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
+    // Password should already be hashed by the controller
     const sql = 
       'INSERT INTO account (first_name, last_name, email, password, account_type) VALUES ($1, $2, $3, $4, $5) RETURNING *';
     
-    const result = await pool.query(sql, [first_name, last_name, email, hashedPassword, 'Client']);
+    const result = await pool.query(sql, [first_name, last_name, email, password, 'Client']);
     return result.rows[0];
   } catch (error) {
     return error.message;

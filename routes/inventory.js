@@ -10,7 +10,7 @@ const { requireEmployeeOrAdmin } = require("../utilities/auth");
  *************************/
 const prepareInventoryData = async (req, res, next) => {
   res.locals.nav = await utilities.getNav();
-  res.locals.classificationSelect = await utilities.buildClassificationList();
+  res.locals.classificationSelect = await utilities.buildClassificationList(req.body.classification_id || null);
   next();
 };
 
@@ -34,7 +34,6 @@ router.get(
 router.post(
   "/add-classification",
   utilities.handleErrors(prepareInventoryData),
-  requireEmployeeOrAdmin,
   validate.classificationRules(),
   validate.checkClassificationData,
   utilities.handleErrors(inventoryController.addClassification)
