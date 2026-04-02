@@ -48,6 +48,39 @@ app.use((req, res, next) => {
   if (!req.session) {
     req.session = {};
   }
+
+  // Simple flash message implementation using cookie
+  req.flash = (type, msg) => {
+    if (type && msg) {
+      let flash = {};
+      if (req.cookies.flash) {
+        try {
+          flash = JSON.parse(req.cookies.flash);
+        } catch (err) {
+          flash = {};
+        }
+      }
+      if (!flash[type]) {
+        flash[type] = [];
+      }
+      flash[type].push(msg);
+      res.cookie('flash', JSON.stringify(flash), { httpOnly: true });
+      return;
+    }
+
+    // get + clear flash
+    let data = {};
+    if (req.cookies.flash) {
+      try {
+        data = JSON.parse(req.cookies.flash);
+      } catch (err) {
+        data = {};
+      }
+    }
+    res.clearCookie('flash');
+    return data;
+  };
+
   next();
 });
 

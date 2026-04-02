@@ -34,7 +34,7 @@ const checkJWTToken = (req, res, next) => {
 const requireLogin = (req, res, next) => {
   if (!req.session.user) {
     req.session.message = 'You must log in to access this page.';
-    return res.redirect('/user/login');
+    return res.redirect('/account/login');
   }
   next();
 };
@@ -45,12 +45,12 @@ const requireLogin = (req, res, next) => {
 const requireEmployeeOrAdmin = (req, res, next) => {
   if (!req.session.user) {
     req.session.message = 'You must log in to access inventory management.';
-    return res.redirect('/user/login');
+    return res.redirect('/account/login');
   }
 
   if (req.session.user.account_type !== 'Employee' && req.session.user.account_type !== 'Admin') {
     req.session.message = 'You do not have permission to access inventory management.';
-    return res.redirect('/user/login');
+    return res.redirect('/account/login');
   }
 
   next();

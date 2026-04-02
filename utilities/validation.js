@@ -145,6 +145,82 @@ exports.checkUpdateAccountData = (req, res, next) => {
   next();
 };
 
+/* **************************************** * Check Login Data
+ **************************************** */
+exports.checkLoginData = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render('account/login', {
+      title: 'Login',
+      nav: res.locals.nav,
+      errors: errors.array(),
+      email: req.body.email
+    });
+  }
+  next();
+};
+
+/* ****************************************
+ * Check Registration Data
+ **************************************** */
+exports.checkRegisterData = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render('account/register', {
+      title: 'Register',
+      nav: res.locals.nav,
+      errors: errors.array(),
+      ...req.body
+    });
+  }
+  next();
+};
+
+/* **************************************** * Registration Rules
+ **************************************** */
+exports.registerRules = () => {
+  return [
+    body("first_name")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("First name is required."),
+
+    body("last_name")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Last name is required."),
+
+    body("email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required."),
+
+    body("password")
+      .trim()
+      .isLength({ min: 8 })
+      .withMessage("Password must be at least 8 characters long.")
+  ];
+};
+
+/* ****************************************
+ * Login Rules
+ **************************************** */
+exports.loginRules = () => {
+  return [
+    body("email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required."),
+
+    body("password")
+      .trim()
+      .isLength({ min: 8 })
+      .withMessage("Password is required.")
+  ];
+};
+
 /* ****************************************
  * Password Rules
  **************************************** */

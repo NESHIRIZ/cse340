@@ -1,6 +1,8 @@
 <div id="message-container">
-  <% if (message) { %>
-    <div class="notice"><%= message %></div>
+  <% if (messages && messages.notice) { %>
+    <% messages.notice.forEach(msg => { %>
+      <div class="notice"><%= msg %></div>
+    <% }); %>
   <% } %>
 </div>
 

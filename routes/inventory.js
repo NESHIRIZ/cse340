@@ -33,8 +33,10 @@ router.get(
 // Process add classification (POST)
 router.post(
   "/add-classification",
-  // validate.classificationRules(),
-  // validate.checkClassificationData,
+  utilities.handleErrors(prepareInventoryData),
+  requireEmployeeOrAdmin,
+  validate.classificationRules(),
+  validate.checkClassificationData,
   utilities.handleErrors(inventoryController.addClassification)
 );
 

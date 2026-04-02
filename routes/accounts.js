@@ -14,6 +14,46 @@ const prepareData = async (req, res, next) => {
 };
 
 /* ***********************
+ * Login View
+ *************************/
+router.get(
+  '/login',
+  utilities.handleErrors(prepareData),
+  utilities.handleErrors(accountsController.buildLogin)
+);
+
+/* ***********************
+ * Process Login
+ *************************/
+router.post(
+  '/login',
+  utilities.handleErrors(prepareData),
+  validate.loginRules(),
+  validate.checkLoginData,
+  utilities.handleErrors(accountsController.login)
+);
+
+/* ***********************
+ * Register View
+ *************************/
+router.get(
+  '/register',
+  utilities.handleErrors(prepareData),
+  utilities.handleErrors(accountsController.buildRegister)
+);
+
+/* ***********************
+ * Process Registration
+ *************************/
+router.post(
+  '/register',
+  utilities.handleErrors(prepareData),
+  validate.registerRules(),
+  validate.checkRegisterData,
+  utilities.handleErrors(accountsController.register)
+);
+
+/* ***********************
  * Account Management View
  *************************/
 router.get(
