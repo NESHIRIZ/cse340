@@ -64,31 +64,46 @@ exports.postVehicleReview = async (req, res, next) => {
 };
 
 /* ****************************************
- * Get Custom Vehicles List
+ * Get Custom Builds Page
  **************************************** */
 exports.getCustomVehicles = async (req, res, next) => {
   try {
-    const classifications = await inventoryModel.getClassifications();
-    const customClass = classifications.rows.find(c => c.classification_name.toLowerCase() === 'custom');
-
-    if (!customClass) {
-      return res.status(404).render('errors/error', {
-        title: 'Custom Category Missing',
-        message: 'Custom classification not found.',
-        nav: await utilities.getNav()
-      });
-    }
-
-    const vehicles = await inventoryModel.getVehiclesByClassification(customClass.classification_id, 0);
     const nav = await utilities.getNav();
-
-    res.render('inventory/classification', {
+    res.render('inventory/custom-builds', {
       title: 'Custom Builds',
       nav,
-      vehicles: vehicles.rows,
-      classification: customClass,
-      minRating: 0
+      messages: req.flash(),
+      currentUser: req.session.user || null
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* ****************************************
+ * Post Custom Build Request
+ **************************************** */
+exports.postCustomBuildRequest = async (req, res, next) => {
+  try {
+    const account_id = req.session.user ? req.session.user.account_id : null;
+    const { preferred_make, preferred_model, budget, desired_features, additional_notes } = req.body;
+
+    const requestResult = await inventoryModel.addCustomRequest(
+      account_id,
+      preferred_make,
+      preferred_model,
+      desired_features,
+      budget || null,
+      additional_notes || null
+    );
+
+    if (!requestResult) {
+      req.flash('error', 'Unable to submit your custom build request at this time. Please try again.');
+      return res.redirect('/vehicles/custom');
+    }
+
+    req.flash('notice', 'Custom build request submitted successfully! Our team will contact you shortly.');
+    return res.redirect('/vehicles/custom');
   } catch (error) {
     next(error);
   }

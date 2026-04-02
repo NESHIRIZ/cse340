@@ -117,6 +117,48 @@ exports.checkReviewData = (req, res, next) => {
 };
 
 /* ****************************************
+ * Custom Build Request Rules
+ **************************************** */
+exports.customBuildRules = () => {
+  return [
+    body('desired_features')
+      .trim()
+      .isLength({ min: 10 })
+      .withMessage('Please describe your desired vehicle features (at least 10 characters).'),
+    body('budget')
+      .optional({ checkFalsy: true })
+      .isFloat({ min: 0 })
+      .withMessage('Budget must be a positive number.'),
+    body('preferred_make')
+      .trim()
+      .isLength({ max: 50 })
+      .withMessage('Preferred make must be less than 50 characters.'),
+    body('preferred_model')
+      .trim()
+      .isLength({ max: 50 })
+      .withMessage('Preferred model must be less than 50 characters.'),
+    body('additional_notes')
+      .trim()
+      .isLength({ max: 1000 })
+      .withMessage('Additional notes must be under 1000 characters.')
+  ];
+};
+
+/* ****************************************
+ * Check Custom Build Data
+ **************************************** */
+exports.checkCustomBuildData = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    req.flash('error', errors.array().map(err => err.msg).join(' '));
+    return res.redirect('/vehicles/custom');
+  }
+
+  next();
+};
+
+/* ****************************************
  * Check Inventory Data
  **************************************** */
 exports.checkInventoryData = async (req, res, next) => {

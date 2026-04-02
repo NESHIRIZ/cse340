@@ -160,6 +160,24 @@ exports.getReviewsByAccountId = async (account_id) => {
 };
 
 /* ***************************
+ *  Add custom request
+ * ************************** */
+exports.addCustomRequest = async (account_id, preferred_make, preferred_model, desired_features, budget, additional_notes) => {
+  try {
+    const result = await pool.query(
+      `INSERT INTO public.custom_request (account_id, preferred_make, preferred_model, desired_features, budget, additional_notes)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [account_id, preferred_make, preferred_model, desired_features, budget, additional_notes]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+/* ***************************
  *  Add new classification
  * ************************** */
 exports.addClassification = async (classification_name) => {

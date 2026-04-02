@@ -1,0 +1,61 @@
+<div id="message-container">
+  <% if (messages && messages.notice && messages.notice.length > 0) { %>
+    <% messages.notice.forEach(msg => { %>
+      <div class="notice"><%= msg %></div>
+    <% }) %>
+  <% } %>
+  <% if (messages && messages.error && messages.error.length > 0) { %>
+    <% messages.error.forEach(msg => { %>
+      <div class="error-container"><%= msg %></div>
+    <% }) %>
+  <% } %>
+</div>
+
+<h1>Custom Builds</h1>
+<p class="subtitle">Tell us what you want, and our team will help source or build your dream car.</p>
+
+<section class="custom-instructions">
+  <h2>How It Works</h2>
+  <ul>
+    <li>Select your favorite make and model (optional).</li>
+    <li>Describe the features, performance, and style you want.</li>
+    <li>Set your budget range to help us recommend the best match.</li>
+    <li>Submit your request and a vehicle specialist will contact you.</li>
+  </ul>
+</section>
+
+<form method="POST" action="/vehicles/custom" class="form custom-form">
+  <fieldset>
+    <legend>Custom Build Submission</legend>
+
+    <div class="form-group">
+      <label for="preferred_make">Preferred Make</label>
+      <input type="text" id="preferred_make" name="preferred_make" class="form-control" maxlength="50" placeholder="e.g., Ford, Tesla" value="<%= currentUser ? currentUser.account_type==='Admin' ? '' : '' : '' %>" />
+    </div>
+
+    <div class="form-group">
+      <label for="preferred_model">Preferred Model</label>
+      <input type="text" id="preferred_model" name="preferred_model" class="form-control" maxlength="50" placeholder="e.g., Mustang, Model S" />
+    </div>
+
+    <div class="form-group">
+      <label for="desired_features">Desired Features <span class="required">*</span></label>
+      <textarea id="desired_features" name="desired_features" class="form-control" rows="5" required minlength="10" placeholder="Describe performance, color, tech, etc."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="budget">Budget (USD)</label>
+      <input type="number" id="budget" name="budget" class="form-control" min="0" step="0.01" placeholder="10000" />
+    </div>
+
+    <div class="form-group">
+      <label for="additional_notes">Additional Notes</label>
+      <textarea id="additional_notes" name="additional_notes" class="form-control" rows="4" maxlength="1000" placeholder="Any other requirements or timeline."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Submit Request</button>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+  </fieldset>
+</form>

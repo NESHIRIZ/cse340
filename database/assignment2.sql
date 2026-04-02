@@ -8,6 +8,17 @@ CREATE TABLE IF NOT EXISTS public.vehicle_review (
   created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS public.custom_request (
+  request_id SERIAL PRIMARY KEY,
+  account_id INT REFERENCES public.account(account_id) ON DELETE SET NULL,
+  preferred_make TEXT,
+  preferred_model TEXT,
+  desired_features TEXT NOT NULL,
+  budget NUMERIC(10,2),
+  additional_notes TEXT,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 1. Insert Tony Stark into account table
 INSERT INTO public.account (first_name, last_name, email, password)
 VALUES ('Tony', 'Stark', 'tony@starkent.com', 'Iam1ronM@n');
