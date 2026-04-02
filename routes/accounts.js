@@ -98,6 +98,16 @@ router.post(
 );
 
 /* ***********************
+ * Account Reviews
+ *************************/
+router.get(
+  '/reviews',
+  utilities.handleErrors(prepareData),
+  requireLogin,
+  utilities.handleErrors(accountsController.buildAccountReviews)
+);
+
+/* ***********************
  * Logout
  *************************/
 router.get(

@@ -69,7 +69,8 @@ exports.postVehicleReview = async (req, res, next) => {
 exports.getVehiclesByClassification = async (req, res, next) => {
   try {
     const classificationId = req.params.classificationId;
-    const vehicles = await inventoryModel.getVehiclesByClassification(classificationId);
+    const minRating = parseFloat(req.query.minRating) || 0;
+    const vehicles = await inventoryModel.getVehiclesByClassification(classificationId, minRating);
     const nav = await utilities.getNav();
 
     if (!vehicles || vehicles.rows.length === 0) {
@@ -88,7 +89,8 @@ exports.getVehiclesByClassification = async (req, res, next) => {
       title: `${title} Vehicles`,
       nav,
       vehicles: vehicles.rows,
-      classification
+      classification,
+      minRating
     });
   } catch (error) {
     next(error);

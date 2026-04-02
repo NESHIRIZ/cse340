@@ -6,7 +6,8 @@ exports.buildHome = async (req, res, next) => {
   try {
     let nav = await utilities.getNav(); // get navigation
     let classificationGrid = await utilities.buildClassificationGrid(); // get classification grid
-    res.render("index", { title: "Home", nav, classificationGrid });
+    let topVehicles = await utilities.getTopRatedVehicles(5); // new top rated vehicles
+    res.render("index", { title: "Home", nav, classificationGrid, topVehicles });
   } catch (err) {
     next(err); // forward errors to the Express error handler
   }

@@ -31,14 +31,22 @@ exports.getClassifications = async () => {
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
-exports.getVehiclesByClassification = async (classification_id) => {
+exports.getVehiclesByClassification = async (classification_id, minRating = 0) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM public.inventory AS i
-      JOIN public.classification AS c
-      ON i.classification_id = c.classification_id
-      WHERE i.classification_id = $1`,
-      [classification_id]
+      `SELECT i.*, c.classification_name,
+        COALESCE(ROUND(AVG(vr.rating)::numeric, 1), 0) AS avg_rating,
+        COUNT(vr.review_id) AS review_count
+       FROM public.inventory AS i
+       JOIN public.classification AS c
+         ON i.classification_id = c.classification_id
+       LEFT JOIN public.vehicle_review AS vr
+         ON i.inventory_id = vr.inventory_id
+       WHERE i.classification_id = $1
+       GROUP BY i.inventory_id, c.classification_name
+       HAVING COALESCE(AVG(vr.rating), 0) >= $2
+       ORDER BY avg_rating DESC, i.inv_make ASC`,
+      [classification_id, minRating]
     );
     return result;
   } catch (error) {
@@ -102,6 +110,52 @@ exports.addReview = async (inventory_id, account_id, review_text, rating) => {
   } catch (error) {
     console.error(error);
     return null;
+  }
+};
+
+/* ***************************
+ *  Get top rated vehicles (min 1 review)
+ * ************************** */
+exports.getTopRatedVehicles = async (limit = 5) => {
+  try {
+    const result = await pool.query(
+      `SELECT i.inventory_id, i.inv_make, i.inv_model, i.inv_thumbnail, i.inv_price,
+        COALESCE(ROUND(AVG(vr.rating)::numeric, 1), 0) AS avg_rating,
+        COUNT(vr.review_id) AS review_count
+       FROM public.inventory i
+       LEFT JOIN public.vehicle_review vr
+         ON i.inventory_id = vr.inventory_id
+       GROUP BY i.inventory_id
+       HAVING COUNT(vr.review_id) > 0
+       ORDER BY avg_rating DESC, review_count DESC
+       LIMIT $1`,
+      [limit]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+/* ***************************
+ *  Get reviews by account_id
+ * ************************** */
+exports.getReviewsByAccountId = async (account_id) => {
+  try {
+    const result = await pool.query(
+      `SELECT vr.review_id, vr.review_text, vr.rating, vr.created_at,
+              i.inventory_id, i.inv_make, i.inv_model
+       FROM public.vehicle_review vr
+       JOIN public.inventory i ON vr.inventory_id = i.inventory_id
+       WHERE vr.account_id = $1
+       ORDER BY vr.created_at DESC`,
+      [account_id]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };
 

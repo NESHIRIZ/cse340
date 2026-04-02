@@ -1,0 +1,31 @@
+<div id="message-container">
+  <% if (messages && messages.notice && messages.notice.length > 0) { %>
+    <% messages.notice.forEach(msg => { %>
+      <div class="notice"><%= msg %></div>
+    <% }) %>
+  <% } %>
+  <% if (messages && messages.error && messages.error.length > 0) { %>
+    <% messages.error.forEach(msg => { %>
+      <div class="error-container"><%= msg %></div>
+    <% }) %>
+  <% } %>
+</div>
+
+<h1>My Reviews</h1>
+
+<% if (reviews && reviews.length > 0) { %>
+  <div class="reviews-list">
+    <% reviews.forEach(review => { %>
+      <article class="review-card">
+        <h3><a href="/vehicles/<%= review.inventory_id %>"><%= review.inv_make %> <%= review.inv_model %></a></h3>
+        <p>Rating: <strong><%= review.rating %></strong> / 5</p>
+        <p><%= review.review_text %></p>
+        <time datetime="<%= review.created_at.toISOString() %>"><%= new Date(review.created_at).toLocaleString() %></time>
+      </article>
+    <% }) %>
+  </div>
+<% } else { %>
+  <p>You have not submitted any reviews yet. Visit a vehicle detail page to add one.</p>
+<% } %>
+
+<p><a href="/account" class="btn">Back to Account</a></p>

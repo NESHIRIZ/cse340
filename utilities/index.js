@@ -105,6 +105,19 @@ Util.buildClassificationGrid = async () => {
   }
 };
 
+/* ****************************************
+ * Get top rated vehicles for homepage
+ **************************************** */
+Util.getTopRatedVehicles = async (limit = 5) => {
+  try {
+    const data = await inventoryModel.getTopRatedVehicles(limit);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 /* Helper function for classification descriptions */
 function getClassificationDescription(name) {
   const descriptions = {

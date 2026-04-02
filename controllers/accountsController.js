@@ -1,4 +1,5 @@
 const accountsModel = require('../models/accountsModel');
+const inventoryModel = require('../models/inventoryModel');
 const utilities = require('../utilities/index');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -176,6 +177,26 @@ exports.buildAccountManagement = async (req, res, next) => {
     if (req.session) {
       req.session.message = '';
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* *****************************
+ * Build Account Reviews View
+ *************************** */
+exports.buildAccountReviews = async (req, res, next) => {
+  try {
+    const nav = res.locals.nav;
+    const accountId = req.session.user.account_id;
+    const reviews = await inventoryModel.getReviewsByAccountId(accountId);
+
+    res.render('./account/account-reviews', {
+      title: 'My Reviews',
+      nav,
+      reviews,
+      messages: req.flash()
+    });
   } catch (error) {
     next(error);
   }
