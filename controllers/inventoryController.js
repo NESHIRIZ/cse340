@@ -64,6 +64,37 @@ exports.postVehicleReview = async (req, res, next) => {
 };
 
 /* ****************************************
+ * Get Custom Vehicles List
+ **************************************** */
+exports.getCustomVehicles = async (req, res, next) => {
+  try {
+    const classifications = await inventoryModel.getClassifications();
+    const customClass = classifications.rows.find(c => c.classification_name.toLowerCase() === 'custom');
+
+    if (!customClass) {
+      return res.status(404).render('errors/error', {
+        title: 'Custom Category Missing',
+        message: 'Custom classification not found.',
+        nav: await utilities.getNav()
+      });
+    }
+
+    const vehicles = await inventoryModel.getVehiclesByClassification(customClass.classification_id, 0);
+    const nav = await utilities.getNav();
+
+    res.render('inventory/classification', {
+      title: 'Custom Builds',
+      nav,
+      vehicles: vehicles.rows,
+      classification: customClass,
+      minRating: 0
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* ****************************************
  * Get Vehicles by Classification
  **************************************** */
 exports.getVehiclesByClassification = async (req, res, next) => {

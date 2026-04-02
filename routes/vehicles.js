@@ -3,6 +3,9 @@ const router = express.Router();
 const inventoryController = require('../controllers/inventoryController');
 const { requireLogin } = require('../utilities/auth');
 
+// Route to show custom-built vehicles
+router.get('/custom', inventoryController.getCustomVehicles);
+
 // Route to show vehicles by classification
 router.get('/type/:classificationId', inventoryController.getVehiclesByClassification);
 

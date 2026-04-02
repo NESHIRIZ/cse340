@@ -22,6 +22,7 @@ Util.getNav = async () => {
     let data = await inventoryModel.getClassifications();
     let nav = '<ul>';
     nav += '<li><a href="/" title="Home page">Home</a></li>';
+    nav += '<li><a href="/vehicles/custom" title="Explore custom builds">Custom Builds</a></li>';
     data.rows.forEach((row) => {
       nav += '<li>';
       nav += '<a href="/vehicles/type/' + row.classification_id + '" title="See our ' + row.classification_name + ' lineup">';
