@@ -1,1 +1,68 @@
 <%- vehicleHTML %>
+
+<div id="message-container">
+  <% if (messages && messages.notice && messages.notice.length > 0) { %>
+    <% messages.notice.forEach(msg => { %>
+      <div class="alert alert-success"><%= msg %></div>
+    <% }); %>
+  <% } %>
+  <% if (messages && messages.error && messages.error.length > 0) { %>
+    <% messages.error.forEach(msg => { %>
+      <div class="alert alert-error"><%= msg %></div>
+    <% }); %>
+  <% } %>
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="error-container">
+      <ul>
+        <% errors.forEach(err => { %>
+          <li><%= err.msg %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+</div>
+
+<section class="review-section">
+  <h2>Customer Reviews</h2>
+
+  <% if (reviews && reviews.length > 0) { %>
+    <div class="reviews-list">
+      <% reviews.forEach(review => { %>
+        <article class="review-card">
+          <div class="review-header">
+            <strong><%= review.first_name %> <%= review.last_name %></strong>
+            <span class="review-rating"><%= '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating) %></span>
+          </div>
+          <time datetime="<%= review.created_at.toISOString() %>"><%= new Date(review.created_at).toLocaleString() %></time>
+          <p><%= review.review_text %></p>
+        </article>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="no-reviews">No reviews yet. Be the first to review this vehicle!</p>
+  <% } %>
+
+  <% if (user) { %>
+    <form method="POST" action="/vehicles/<%= vehicleId %>/review" class="form review-form">
+      <fieldset>
+        <legend>Leave a Review</legend>
+
+        <div class="form-group">
+          <label for="rating">Rating (1-5)<span class="required">*</span></label>
+          <input type="number" id="rating" name="rating" min="1" max="5" required value="5" />
+        </div>
+
+        <div class="form-group">
+          <label for="review_text">Comment<span class="required">*</span></label>
+          <textarea id="review_text" name="review_text" required minlength="10" maxlength="500" placeholder="Share your experience..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Submit Review</button>
+        </div>
+      </fieldset>
+    </form>
+  <% } else { %>
+    <p class="info-text">You must <a href="/account/login">log in</a> to submit a review.</p>
+  <% } %>
+</section>

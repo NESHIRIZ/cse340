@@ -67,6 +67,45 @@ exports.getVehicleById = async (inventory_id) => {
 };
 
 /* ***************************
+ *  Get reviews by vehicle id
+ * ************************** */
+exports.getReviewsByVehicleId = async (inventory_id) => {
+  try {
+    const result = await pool.query(
+      `SELECT vr.review_id, vr.rating, vr.review_text, vr.created_at,
+              a.first_name, a.last_name
+       FROM public.vehicle_review vr
+       JOIN public.account a ON vr.account_id = a.account_id
+       WHERE vr.inventory_id = $1
+       ORDER BY vr.created_at DESC`,
+      [inventory_id]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+/* ***************************
+ *  Add vehicle review
+ * ************************** */
+exports.addReview = async (inventory_id, account_id, review_text, rating) => {
+  try {
+    const result = await pool.query(
+      `INSERT INTO public.vehicle_review (inventory_id, account_id, review_text, rating)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [inventory_id, account_id, review_text, rating]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+/* ***************************
  *  Add new classification
  * ************************** */
 exports.addClassification = async (classification_name) => {

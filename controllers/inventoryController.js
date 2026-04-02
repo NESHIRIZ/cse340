@@ -19,12 +19,45 @@ exports.getVehicleDetail = async (req, res, next) => {
 
     const nav = await utilities.getNav();
     const vehicleHTML = utilities.buildVehicleDetailHTML(vehicle);
+    const reviews = await inventoryModel.getReviewsByVehicleId(vehicleId);
 
     res.render("vehicle-detail", {
       title: `${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
-      vehicleHTML
+      vehicleHTML,
+      reviews,
+      vehicleId,
+      user: req.session.user,
+      messages: req.flash()
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* ****************************************
+ * Post Vehicle Review
+ **************************************** */
+exports.postVehicleReview = async (req, res, next) => {
+  try {
+    const { review_text, rating } = req.body;
+    const vehicleId = req.params.id;
+
+    if (!req.session.user) {
+      req.flash('error', 'Please log in to submit a review.');
+      return res.redirect('/account/login');
+    }
+
+    const accountId = req.session.user.account_id;
+
+    const addResult = await inventoryModel.addReview(vehicleId, accountId, review_text, rating);
+    if (!addResult) {
+      req.flash('error', 'Unable to save your review. Please try again.');
+      return res.redirect(`/vehicles/${vehicleId}`);
+    }
+
+    req.flash('notice', 'Review submitted successfully.');
+    return res.redirect(`/vehicles/${vehicleId}`);
   } catch (error) {
     next(error);
   }

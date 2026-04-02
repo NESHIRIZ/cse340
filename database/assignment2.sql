@@ -1,3 +1,13 @@
+-- New feature: vehicle review table
+CREATE TABLE IF NOT EXISTS public.vehicle_review (
+  review_id SERIAL PRIMARY KEY,
+  inventory_id INT NOT NULL REFERENCES public.inventory(inventory_id) ON DELETE CASCADE,
+  account_id INT NOT NULL REFERENCES public.account(account_id) ON DELETE CASCADE,
+  review_text TEXT NOT NULL,
+  rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 1. Insert Tony Stark into account table
 INSERT INTO public.account (first_name, last_name, email, password)
 VALUES ('Tony', 'Stark', 'tony@starkent.com', 'Iam1ronM@n');

@@ -88,6 +88,35 @@ exports.inventoryRules = () => {
 };
 
 /* ****************************************
+ * Review Rules
+ **************************************** */
+exports.reviewRules = () => {
+  return [
+    body('rating')
+      .isInt({ min: 1, max: 5 })
+      .withMessage('Rating must be an integer between 1 and 5.'),
+    body('review_text')
+      .trim()
+      .isLength({ min: 10, max: 500 })
+      .withMessage('Review comment must be between 10 and 500 characters.')
+  ];
+};
+
+/* ****************************************
+ * Check Review Data
+ **************************************** */
+exports.checkReviewData = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMsg = errors.array().map(e => e.msg).join(' ');
+    req.flash('error', errorMsg);
+    return res.redirect(`/vehicles/${req.params.id}`);
+  }
+
+  next();
+};
+
+/* ****************************************
  * Check Inventory Data
  **************************************** */
 exports.checkInventoryData = async (req, res, next) => {

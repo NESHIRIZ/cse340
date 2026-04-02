@@ -320,6 +320,58 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.review-section {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.review-section h2 {
+  margin-bottom: 1rem;
+}
+
+.reviews-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.review-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.review-rating {
+  color: #ffb000;
+  font-size: 1rem;
+}
+
+.no-reviews,
+.info-text {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.review-form .form-group {
+  margin-bottom: 0.75rem;
+}
+
+.review-form textarea {
+  min-height: 120px;
+}
+
 /* Responsive for vehicle detail */
 @media (max-width: 768px) {
   .vehicle-detail-container {
