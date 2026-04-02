@@ -205,7 +205,8 @@ exports.buildAccountUpdate = async (req, res, next) => {
       nav,
       account,
       message: res.locals.message || '',
-      errors: res.locals.errors || null
+      errors: res.locals.errors || null,
+      messages: req.flash()
     });
   } catch (error) {
     next(error);
