@@ -4,6 +4,10 @@ const utilities = require('../utilities/index');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const isHashedPassword = (password) => {
+  return typeof password === 'string' && /^\$2[aby]\$.{56}$/.test(password);
+};
+
 /* *****************************
  * Build Login View
  *************************** */
@@ -112,8 +116,10 @@ exports.accountLogin = async (req, res, next) => {
       });
     }
 
-    // Compare passwords
-    const passwordMatch = await bcrypt.compare(password, account.password);
+    // Compare passwords, support legacy plaintext values while migrating to bcrypt
+    const passwordMatch = isHashedPassword(account.password)
+      ? await bcrypt.compare(password, account.password)
+      : password === account.password;
 
     if (!passwordMatch) {
       req.flash('error', 'Invalid email or password.');
@@ -126,9 +132,23 @@ exports.accountLogin = async (req, res, next) => {
       });
     }
 
-    // Create JWT token
+    if (!isHashedPassword(account.password)) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await accountsModel.updatePassword(account.account_id, hashedPassword);
+    }
+
+    const accountType = String(account.account_type || '').trim();
+    const normalizedAccountType = accountType.toLowerCase();
+
+    // Create JWT token with role and name data
     const token = jwt.sign(
-      { account_id: account.account_id, email: account.email },
+      {
+        account_id: account.account_id,
+        email: account.email,
+        first_name: account.first_name,
+        last_name: account.last_name,
+        account_type: accountType
+      },
       process.env.ACCESS_TOKEN_SECRET || 'your-secret-key',
       { expiresIn: '7d' }
     );
@@ -142,10 +162,15 @@ exports.accountLogin = async (req, res, next) => {
       first_name: account.first_name,
       last_name: account.last_name,
       email: account.email,
-      account_type: account.account_type
+      account_type: accountType
     };
 
     req.flash('notice', 'You have successfully logged in!');
+
+    if (normalizedAccountType === 'admin' || normalizedAccountType === 'employee') {
+      return res.redirect('/inv/');
+    }
+
     res.redirect('/account');
   } catch (error) {
     next(error);

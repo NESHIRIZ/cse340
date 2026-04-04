@@ -48,7 +48,8 @@ const requireEmployeeOrAdmin = (req, res, next) => {
     return res.redirect('/account/login');
   }
 
-  if (req.session.user.account_type !== 'Employee' && req.session.user.account_type !== 'Admin') {
+  const accountType = String(req.session.user.account_type || '').trim().toLowerCase();
+  if (accountType !== 'employee' && accountType !== 'admin') {
     req.flash('error', 'You do not have permission to access inventory management.');
     return res.redirect('/account/login');
   }

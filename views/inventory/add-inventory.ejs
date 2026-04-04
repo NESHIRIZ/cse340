@@ -38,15 +38,6 @@
     <div class="form-group">
       <label for="classificationList">Classification <span class="required">*</span></label>
       <%- classificationSelect %>
-      <script>
-        // Set sticky value for classification
-        document.addEventListener('DOMContentLoaded', function() {
-          const classId = '<%= classification_id || "" %>';
-          if (classId) {
-            document.getElementById('classificationList').value = classId;
-          }
-        });
-      </script>
     </div>
 
     <!-- Make -->
